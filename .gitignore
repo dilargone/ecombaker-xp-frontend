@@ -31,6 +31,19 @@ dist-ssr
 # Build outputs
 build
 out
+dist
+dist-ssr
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Vite compiled config
+vite.config.js
+vite.config.d.ts
+
+# Rendered nginx config (template is committed, rendered output is not)
+nginx/stage.ecombaker.com.conf
+deploy/stage.ecombaker.com.conf
 
 # OS files
 Thumbs.db
