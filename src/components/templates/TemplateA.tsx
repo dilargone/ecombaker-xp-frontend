@@ -141,6 +141,49 @@ const TemplateA: React.FC<TemplateAProps> = ({ data }) => {
           <div className="ta-loading">Loading store…</div>
         ) : (
           <>
+            {/* ── Why-us ribbon ── */}
+            <div className="ta-ribbon">
+              {[{ icon: '🚚', title: 'Free Delivery', sub: 'Orders over $49' },
+                { icon: '🌿', title: 'Fresh Daily', sub: 'Farm to doorstep' },
+                { icon: '↩️', title: 'Easy Returns', sub: '30-day policy' },
+                { icon: '💬', title: '24/7 Support', sub: 'Always here for you' }].map(item => (
+                <div key={item.title} className="ta-ribbon-item">
+                  <div className="icon">{item.icon}</div>
+                  <strong>{item.title}</strong>
+                  <span>{item.sub}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* ── Category visual cards ── */}
+            {categories.length > 0 && (
+              <div className="ta-cat-cards">
+                <div className="ta-cat-header"><h2>Shop by Category</h2></div>
+                <div className="ta-cat-cards-grid">
+                  <div
+                    className={`ta-cat-card${!activeCategory ? ' active' : ''}`}
+                    onClick={() => setActiveCategory(null)}
+                  >
+                    <div className="ta-cat-card-icon">🏪</div>
+                    <div className="ta-cat-card-name">All</div>
+                  </div>
+                  {categories.slice(0, 7).map((c, i) => {
+                    const icons = ['🍎','👗','📱','🏠','⚽','📚','💄','🎮','🌸','🛒'];
+                    return (
+                      <div
+                        key={c.id}
+                        className={`ta-cat-card${activeCategory === c.name ? ' active' : ''}`}
+                        onClick={() => setActiveCategory(c.name)}
+                      >
+                        <div className="ta-cat-card-icon">{icons[i % icons.length]}</div>
+                        <div className="ta-cat-card-name">{c.name}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* ── Deals banner ── */}
             {deals.length > 0 && (
               <section className="ta-deals">
@@ -211,18 +254,25 @@ const TemplateA: React.FC<TemplateAProps> = ({ data }) => {
         <div className="ta-footer-inner">
           <div>
             <strong>{storeName}</strong>
-            <p>Your trusted online marketplace</p>
+            <p>Your trusted artisan marketplace</p>
+            <p>Fresh products, honest prices, real care.</p>
           </div>
-          <div>
-            <p>Help &amp; Support</p>
-            <p>Returns &amp; Refunds</p>
-            <p>Shipping Info</p>
+          <div className="ta-footer-col">
+            <h5>Help</h5>
+            <a href="#">Help Center</a>
+            <a href="#">Returns &amp; Refunds</a>
+            <a href="#">Shipping Info</a>
+            <a href="#">Track Order</a>
           </div>
-          <div>
-            <p>© {new Date().getFullYear()} {storeName}. All rights reserved.</p>
-            <p>Code: {data.storeCode}</p>
+          <div className="ta-footer-col">
+            <h5>About</h5>
+            <a href="#">Our Story</a>
+            <a href="#">Sustainability</a>
+            <a href="#">Careers</a>
+            <a href="#">Press</a>
           </div>
         </div>
+        <p className="ta-footer-copy">© {new Date().getFullYear()} {storeName}. All rights reserved. · {data.storeCode}</p>
       </footer>
     </div>
   );

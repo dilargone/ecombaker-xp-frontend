@@ -81,6 +81,12 @@ const TemplateD: React.FC<TemplateDProps> = ({ data }) => {
         )}
       </header>
 
+      {/* ── Status ticker ── */}
+      <div className="td-status-bar">
+        <span className="td-status-dot" />
+        SYS:ONLINE &nbsp;&bull;&nbsp; SECURE_CHANNEL:ACTIVE &nbsp;&bull;&nbsp; INVENTORY:LIVE &nbsp;&bull;&nbsp; {storeName.toUpperCase()}::STORE_MODULE_v2.4
+      </div>
+
       {loading ? (
         <div className="td-loading">LOADING…</div>
       ) : (

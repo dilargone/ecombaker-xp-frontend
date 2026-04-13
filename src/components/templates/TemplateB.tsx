@@ -194,6 +194,15 @@ const TemplateB: React.FC<TemplateBProps> = ({ data }) => {
         </main>
       )}
 
+      <section className="tb-newsletter">
+        <h3>Stay in the Loop</h3>
+        <p>New arrivals, seasonal picks and exclusive offers — straight to your inbox.</p>
+        <div className="tb-newsletter-form">
+          <input type="email" placeholder="your@email.com" />
+          <button>Subscribe</button>
+        </div>
+      </section>
+
       <footer className="tb-footer">
         <div className="tb-footer-top">
           <div className="tb-footer-logo">{storeName}</div>
