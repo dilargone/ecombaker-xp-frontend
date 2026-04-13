@@ -3,11 +3,12 @@ import apiService, {
   ProductResponse,
   CategoryResponse,
   WeeklyProductResponse,
+  TemplateData,
 } from '../../services/apiService';
 import './TemplateA.css';
 
 interface TemplateAProps {
-  data: Record<string, any>;
+  data: TemplateData;
 }
 
 const TemplateA: React.FC<TemplateAProps> = ({ data }) => {
@@ -144,7 +145,7 @@ const TemplateA: React.FC<TemplateAProps> = ({ data }) => {
             {deals.length > 0 && (
               <section className="ta-deals">
                 <div className="ta-section-header">
-                  <h2>🔥 Today's Deals</h2>
+                  <h2>🔥 Today&apos;s Deals</h2>
                 </div>
                 <div className="ta-deals-scroll">
                   {deals.map(deal => (

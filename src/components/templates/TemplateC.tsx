@@ -4,11 +4,12 @@ import apiService, {
   CategoryResponse,
   WeeklyProductResponse,
   TestimonialResponse,
+  TemplateData,
 } from '../../services/apiService';
 import './TemplateC.css';
 
 interface TemplateCProps {
-  data: Record<string, any>;
+  data: TemplateData;
 }
 
 const TemplateC: React.FC<TemplateCProps> = ({ data }) => {
@@ -183,7 +184,7 @@ const TemplateC: React.FC<TemplateCProps> = ({ data }) => {
                   {testimonials.map(t => (
                     <div key={t.id} className="tc-testimonial">
                       <div className="tc-stars">{'★'.repeat(t.rating)}</div>
-                      <p>"{t.content}"</p>
+                      <p>&ldquo;{t.content}&rdquo;</p>
                       <strong>— {t.name}{t.customerLocation ? `, ${t.customerLocation}` : ''}</strong>
                     </div>
                   ))}

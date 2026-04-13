@@ -3,11 +3,12 @@ import apiService, {
   ProductResponse,
   CategoryResponse,
   WeeklyProductResponse,
+  TemplateData,
 } from '../../services/apiService';
 import './TemplateD.css';
 
 interface TemplateDProps {
-  data: Record<string, any>;
+  data: TemplateData;
 }
 
 const TemplateD: React.FC<TemplateDProps> = ({ data }) => {

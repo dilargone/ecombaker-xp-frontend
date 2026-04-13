@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import apiService from '@/services/apiService';
+import apiService, { TemplateData } from '@/services/apiService';
 import TemplateA from './templates/TemplateA';
 import TemplateB from './templates/TemplateB';
 import TemplateC from './templates/TemplateC';
@@ -11,7 +11,7 @@ import { getCurrentDomain, getSubdomain } from '@/utils/domain';
 
 interface TemplateConfig {
   template: ResolvedTemplate;
-  data: Record<string, any>;
+  data: TemplateData;
   message?: string;
 }
 
@@ -38,7 +38,7 @@ const TemplateOrchestrator: React.FC = () => {
         const domain = getCurrentDomain();
         const subdomain = getSubdomain(domain);
 
-        const storeConfig = await apiService.fetchStoreConfig(domain);
+        const storeConfig = await apiService.fetchStoreConfig();
         const resolvedTemplate = resolveTemplateFromCode(storeConfig.templateCode);
 
         setConfig({
@@ -94,7 +94,7 @@ const TemplateOrchestrator: React.FC = () => {
         <div className="error-container">
           <div className="error-box">
             <h2>❌ Unknown Template</h2>
-            <p>Backend returned unknown template: {(config as any).template}</p>
+            <p>Backend returned unknown template: {config.template}</p>
           </div>
         </div>
       );

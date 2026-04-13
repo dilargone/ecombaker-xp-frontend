@@ -4,11 +4,12 @@ import apiService, {
   CategoryResponse,
   WeeklyProductResponse,
   TestimonialResponse,
+  TemplateData,
 } from '../../services/apiService';
 import './TemplateB.css';
 
 interface TemplateBProps {
-  data: Record<string, any>;
+  data: TemplateData;
 }
 
 const TemplateB: React.FC<TemplateBProps> = ({ data }) => {
@@ -52,7 +53,11 @@ const TemplateB: React.FC<TemplateBProps> = ({ data }) => {
   }, []);
 
   const toggleWishlist = (id: string) => {
-    setWishlist(prev => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; });
+    setWishlist(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) { next.delete(id); } else { next.add(id); }
+      return next;
+    });
   };
 
   const totalCartItems = cart.reduce((s, i) => s + i.qty, 0);
@@ -173,7 +178,7 @@ const TemplateB: React.FC<TemplateBProps> = ({ data }) => {
                 {testimonials.map(t => (
                   <div key={t.id} className="tb-testimonial-card">
                     <div className="tb-stars">{'★'.repeat(t.rating)}{'☆'.repeat(5 - t.rating)}</div>
-                    <p className="tb-testimonial-content">"{t.content}"</p>
+                    <p className="tb-testimonial-content">&ldquo;{t.content}&rdquo;</p>
                     <div className="tb-testimonial-author">
                       {t.avatarUrl && <img src={t.avatarUrl} alt={t.name} />}
                       <div>

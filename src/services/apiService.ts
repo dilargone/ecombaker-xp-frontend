@@ -52,6 +52,15 @@ export interface WeeklyProductResponse {
   description: string;
 }
 
+/** Shape of the data prop passed from TemplateOrchestrator to each template */
+export interface TemplateData {
+  domain: string;
+  subdomain: string;
+  storeCode: string;
+  storeName: string;
+  templateCode: string;
+}
+
 export interface TestimonialResponse {
   id: string;
   name: string;
@@ -82,7 +91,7 @@ class ApiService {
     });
   }
 
-  async fetchStoreConfig(_domain?: string): Promise<StoreConfigResponse> {
+  async fetchStoreConfig(): Promise<StoreConfigResponse> {
     try {
       const response = await this.api.get<StoreConfigResponse>('/template-code');
       return response.data;
@@ -139,7 +148,7 @@ class ApiService {
   /**
    * Generic POST request
    */
-  async post<T>(endpoint: string, data: any): Promise<T> {
+  async post<T>(endpoint: string, data: unknown): Promise<T> {
     const response = await this.api.post<T>(endpoint, data);
     return response.data;
   }
@@ -147,7 +156,7 @@ class ApiService {
   /**
    * Generic PUT request
    */
-  async put<T>(endpoint: string, data: any): Promise<T> {
+  async put<T>(endpoint: string, data: unknown): Promise<T> {
     const response = await this.api.put<T>(endpoint, data);
     return response.data;
   }
