@@ -38,10 +38,64 @@ jobs:
           strip_components: 1
           rm: true
 
+      - name: Setup nginx and reload
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.FRONTEND_DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            set -e
+
+            # Install nginx if not present
+            if ! command -v nginx &> /dev/null; then
+              apt-get update -qq && apt-get install -y nginx
+            fi
+
+            # Write nginx config if not already there
+            if [ ! -f /etc/nginx/conf.d/ecombaker-frontend.conf ]; then
+              cat > /etc/nginx/conf.d/ecombaker-frontend.conf << 'NGINXCONF'
+            server {
+                listen 80 default_server;
+                server_name _;
+
+                root /var/www/ecombaker-frontend;
+                index index.html;
+
+                location = /healthz {
+                    return 200 "ok\n";
+                    add_header Content-Type text/plain;
+                }
+
+                location /api/ {
+                    proxy_pass http://x.qa.ecombaker.com;
+                    proxy_http_version 1.1;
+                    proxy_set_header Connection "";
+                    proxy_set_header Host $host;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_connect_timeout 10s;
+                    proxy_read_timeout 30s;
+                }
+
+                location / {
+                    try_files $uri $uri/ /index.html =404;
+                }
+            }
+            NGINXCONF
+              # Remove default site if present
+              rm -f /etc/nginx/sites-enabled/default
+            fi
+
+            nginx -t
+            systemctl enable nginx
+            systemctl restart nginx
+            echo "Nginx running OK"
+
       - name: Smoke test
         run: |
           sleep 3
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.FRONTEND_DROPLET_HOST }}/)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.FRONTEND_DROPLET_HOST }}/healthz)
           echo "HTTP status: $STATUS"
           if [ "$STATUS" != "200" ]; then
             echo "Smoke test failed — got $STATUS"
