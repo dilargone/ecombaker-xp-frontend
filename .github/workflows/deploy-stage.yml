@@ -1,4 +1,4 @@
-gname: Deploy to Stage
+name: Deploy to Stage
 
 on:
   push:
@@ -27,12 +27,12 @@ jobs:
         run: npm run build
         # Mirage is auto-disabled because MODE=production in vite build
 
-      - name: Deploy dist to droplet
+      - name: Deploy dist to frontend droplet
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.DROPLET_HOST }}
-          username: ${{ secrets.DROPLET_USER }}
-          key: ${{ secrets.DROPLET_SSH_KEY }}
+          host: ${{ secrets.FRONTEND_DROPLET_HOST }}
+          username: ${{ secrets.FRONTEND_DROPLET_USER }}
+          key: ${{ secrets.FRONTEND_DROPLET_SSH_KEY }}
           source: "dist/"
           target: "/var/www/ecombaker-frontend"
           strip_components: 1
@@ -41,7 +41,7 @@ jobs:
       - name: Smoke test
         run: |
           sleep 3
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.DROPLET_HOST }}/)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.FRONTEND_DROPLET_HOST }}/)
           echo "HTTP status: $STATUS"
           if [ "$STATUS" != "200" ]; then
             echo "Smoke test failed — got $STATUS"
